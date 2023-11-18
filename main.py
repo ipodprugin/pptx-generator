@@ -18,8 +18,6 @@ from helpers.pptx_render import replace_images_by_shape_text, render_text
 
 from models.gsheet_models import SheetRowTenderContent
 
-from template_pptx_jinja.render import PPTXRendering
-
 
 async def gen_pptx(tender: SheetRowTenderContent, pictures: dict):
     input_path = 'templates/template.pptx'
