@@ -36,10 +36,12 @@ async def gen_pptx(tender: SheetRowTenderContent, pictures: dict):
 
     jinja2_env = jinja2.Environment()
 
+    if not os.path.isdir('generated'):
+        os.mkdir('generated')
     output_path = f'generated/{tender.id}.pptx'
     await render_text(input_path, model, output_path, jinja2_env)
-
     await replace_images_by_shape_text(images=pictures, template_path=output_path, output_path=output_path)
+    return output_path
 
 
 async def get_user_input() -> tuple[list[str], int]:
@@ -114,11 +116,10 @@ async def form_pictures_dict(imgs_folder: str):
     return pictures
 
 
-async def main():
+async def main(search_data: list):
     sa = pygsheets.authorize(service_file=settings.GSHEETS_CREDS_PATH)
     sh = sa.open_by_url(settings.GSHEETURL)
 
-    search_data = await get_user_input()
     tenders = await get_data_from_google_sheet(sh, search_data)
 
     imgzip_paths = []
@@ -133,19 +134,23 @@ async def main():
         with zipfile.ZipFile(zippath, "r") as zip_ref:
             zip_ref.extractall(f"img/")
 
+    generated_pptx_paths = []
     for zippath, tender in zip(imgzip_paths, tenders):
         imgs_folder, _ = os.path.splitext(zippath)
         pictures = await form_pictures_dict(imgs_folder)
-        await gen_pptx(tender=tender, pictures=pictures)
+        generated_pptx_paths.append(await gen_pptx(tender=tender, pictures=pictures))
 
     for zippath in imgzip_paths:
         imgs_folder, _ = os.path.splitext(zippath)
         shutil.rmtree(imgs_folder)
         os.remove(zippath)
+    
+    return generated_pptx_paths
 
 
 if __name__ == '__main__':
     pp = pprint.PrettyPrinter(indent=4)
     TENDER_ID_REGEX = re.compile("^\d{8,}$")
 
-    asyncio.run(main())
+    search_data = asyncio.run(get_user_input())
+    print(asyncio.run(main(search_data)))
