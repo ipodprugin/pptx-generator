@@ -34,6 +34,8 @@ async def gen_pptx(tender: SheetRowTenderContent, pictures: dict):
 
     jinja2_env = jinja2.Environment()
 
+    if not os.path.isdir(settings.PPTX_OUTPUT_DIRPATH):
+        os.mkdir(settings.PPTX_OUTPUT_DIRPATH)
     output_path = f'{settings.PPTX_OUTPUT_DIRPATH}/{tender.id}.pptx'
     await render_text(settings.PPTX_TEMPLATE_PATH, model, output_path, jinja2_env)
     await replace_images_by_shape_text(images=pictures, template_path=output_path, output_path=output_path)

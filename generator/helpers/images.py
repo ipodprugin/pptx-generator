@@ -1,3 +1,4 @@
+import os
 from generator.settings.config import settings
 
 
@@ -12,6 +13,8 @@ async def download_item(session, path: str, filename: str):
         resp = await response.json()
         download_link = resp.get('href')
 
+    if not os.path.isdir('img'):
+        os.mkdir('img')
     zippath = f'{settings.IMGS_PATH}/{filename}.zip'
     async with session.get(download_link) as resp:
         with open(zippath, 'wb') as fd:
