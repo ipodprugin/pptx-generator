@@ -1,3 +1,6 @@
+import os
+
+
 async def download_item(session, path: str, filename: str):
     params = {'path': path}
     url = 'https://cloud-api.yandex.net/v1/disk/resources/download'
@@ -9,6 +12,8 @@ async def download_item(session, path: str, filename: str):
         resp = await response.json()
         download_link = resp.get('href')
 
+    if not os.path.isdir('img'):
+        os.mkdir('img')
     zippath = f'img/{filename}.zip'
     async with session.get(download_link) as resp:
         with open(zippath, 'wb') as fd:
