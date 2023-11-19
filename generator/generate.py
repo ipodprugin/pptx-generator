@@ -63,8 +63,6 @@ async def get_user_input() -> tuple[list[str], int]:
 
 
 async def get_data_from_google_sheet(sh: pygsheets.Spreadsheet, search_data: list) -> list[SheetRowTenderContent]:
-    # row example:
-    # ['', '19337217', 'Волжский бульвар, дом 1, корпус 1, этаж 4 , м/м 513', 'ЮВАО', 'Рязанский район', 'Открытый аукцион в электронной форме', '290000', '58000', 'нет', '1.12.2023', '772', '4', 'Многоуровневая парковка', 'https://investmoscow.ru/tenders/tender/19337217', '', '', '', '', '', '', '', '', '513', '11.9', 'https://yadi.sk/i/Dh2Q0tPs4dCCGA | https://yadi.sk/i/CsyijPdB2pYSdg | https://yadi.sk/i/PIov1138K4CftQ | https://yadi.sk/i/jP4D-M9RB6oFag | https://yadi.sk/i/bEqgvIR5k6994Q | https://yadi.sk/i/vkX7NaIWYhkrlA | https://yadi.sk/i/y5LnNfDAlz9xxw | https://yadi.sk/i/Ku1NAJR8sp-6_A | https://yadi.sk/i/s6qXr7HsnLIbIw | https://yadi.sk/i/V5dgi2tz7jG5xA', '', '', '', '', '', '', '']
     wks_list = sh.worksheets()
     wks = wks_list[1]
     rows = []
@@ -154,8 +152,5 @@ async def main(search_data: list):
 
 
 if __name__ == '__main__':
-    # pp = pprint.PrettyPrinter(indent=4)
-    # TENDER_ID_REGEX = re.compile("^\d{8,}$")
-
     search_data = asyncio.run(get_user_input())
     asyncio.run(main(search_data=search_data))
