@@ -91,7 +91,7 @@ async def get_data_from_google_sheet(sh: pygsheets.Spreadsheet, search_data: lis
 
 
 async def form_pictures_dict(imgs_folder: str):
-    pictures = {}
+    pictures = settings.PICTURES
     images = os.listdir(imgs_folder)
 
     plan_img_index = await find_plan_img(images)

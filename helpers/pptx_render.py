@@ -35,6 +35,10 @@ async def _render_text_frame(text_frame, model, jinja2_env):
                 last_ok = False
 
 async def replace_images_by_shape_text(images: dict, template_path: str, output_path: str):
+    # TODO: 
+    #       - Удалять плейсхолдер shape после вставки картинки
+    #       - Сделать фиксированный словарь плейсхолдеров и итерироваться по нему
+    #       - Удалять плейсхолдер, если для него нет картинки
     prs = Presentation(template_path)
     for image in images:
         image_file = images[image]
@@ -43,9 +47,12 @@ async def replace_images_by_shape_text(images: dict, template_path: str, output_
             for shape in slide.shapes:
                 if shape.has_text_frame:
                     if shape.text.find(search_str) != -1:
-                        horiz_ = shape.left
-                        vert_ = shape.top
-                        height_ = shape.height
-                        width_ = shape.width
-                        slide.shapes.add_picture(image_file, horiz_, vert_, width_, height_)
+                        if image_file:
+                            horiz_ = shape.left
+                            vert_ = shape.top
+                            height_ = shape.height
+                            width_ = shape.width
+                            slide.shapes.add_picture(image_file, horiz_, vert_, width_, height_)
+                        sp = shape._sp
+                        sp.getparent().remove(sp)
     prs.save(output_path)
