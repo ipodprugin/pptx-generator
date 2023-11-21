@@ -12,3 +12,4 @@ class SheetRowTenderContent(BaseModel):
     applications_enddate: str | None = None
     deposit: str | None = None
     start_price: str | None = None
+    m1_start_price: str | None = None

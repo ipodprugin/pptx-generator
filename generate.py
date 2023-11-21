@@ -30,6 +30,7 @@ async def gen_pptx(tender: SheetRowTenderContent, pictures: dict):
         "applications_enddate": tender.applications_enddate,
         "deposit": tender.deposit,
         "start_price": tender.start_price,
+        "m1_start_price": tender.m1_start_price,
     }
 
     jinja2_env = jinja2.Environment()
@@ -83,6 +84,7 @@ async def get_data_from_google_sheet(sh: pygsheets.Spreadsheet, search_data: lis
                     applications_enddate=row[10],
                     deposit=row[7],
                     start_price=row[6],
+                    m1_start_price=row[-12],
                 )
                 rows.append(row)
             except IndexError as e:

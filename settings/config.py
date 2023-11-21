@@ -20,7 +20,7 @@ class Settings(BaseSettings):
 
     # defaults
     IMGS_PATH: str = 'generator/img/'
-    PPTX_TEMPLATE_PATH: str = 'generator/templates/template.pptx'
+    PPTX_TEMPLATE_PATH: str = 'generator/templates/template2.pptx'
     PPTX_OUTPUT_DIRPATH: str = 'generator/generated'
     PARK_OBJTYPE_ID: int = 30011578
     NONRESIDENTIAL_OBJTYPE_ID: int = 30011569
